@@ -12,6 +12,17 @@ load_dotenv()
 USER_EMAIL = os.getenv("EMAIL")
 USER_PASSWORD = os.getenv("PASSWORD")
 
-driver = webdriver.Chrome()
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument("--incognito")
+driver = webdriver.Chrome(options=chrome_options)
 driver.get(login_url)
-driver.find_element(By.NAME, "Email").send_keys(USER_EMAIL)
+try:
+    driver.find_element(By.NAME, "Email").send_keys(USER_EMAIL)
+except:
+    print("Email field not found")
+
+try:
+    submit_btn = driver.find_element(By.XPATH, "//button[@type='submit']")
+    submit_btn.click()
+except:
+    print("Submit button not found")
