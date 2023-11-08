@@ -1,5 +1,5 @@
 #! Python3
-# - Download transaction data from Mint.com and save to a CSV file
+# - Download transaction data from capitalone.com and save to a CSV file
 
 import os, time
 from selenium import webdriver
@@ -16,30 +16,25 @@ load_dotenv()
 USER_EMAIL = os.getenv("EMAIL")
 USER_PASSWORD = os.getenv("PASSWORD")
 
-# Set up Chrome options
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument("--incognito")
-
 # Initialize the WebDriver
-driver = webdriver.Chrome(options=chrome_options)
+driver = webdriver.Chrome()
 driver.implicitly_wait(10)  # Wait up to 10 seconds for elements to become available
 driver.get(login_url)
 
 try:
-    # Wait for the email input to be loaded and then input the email
-    email_input = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.NAME, "Email"))
-    )
-    email_input.send_keys(USER_EMAIL)
+    # Input Email & Password
+    email_field = driver.find_element(By.ID, "ods-input-0")
+    email_field.send_keys(USER_EMAIL)
+    password_field = driver.find_element(By.ID, "ods-input-1")
+    password_field.send_keys(USER_PASSWORD)
 
-    # Click the submit button
-    submit_btn = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']"))
-    )
+    # Click the Sign In button
+    submit_btn = driver.find_element(By.ID, "noAcctSubmit")
     submit_btn.click()
 
 except Exception as e:
     print(f"An error occurred: {e}")
+
 finally:
     # Quit the driver session
     driver.quit()
