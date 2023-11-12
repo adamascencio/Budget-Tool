@@ -1,7 +1,8 @@
 #! Python3
 # - Download transaction data from capitalone.com and save to a CSV file
 
-import os, time
+import os, time, shutil
+from pathlib import Path
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -21,6 +22,7 @@ driver = webdriver.Chrome()
 driver.implicitly_wait(10)  # Wait up to 10 seconds for elements to become available
 driver.get(login_url)
 
+# Download transaction data from Capital One in CSV format
 try:
     # Input Email & Password
     email_field = driver.find_element(By.ID, "ods-input-0")
@@ -39,16 +41,17 @@ try:
     )
     view_account_btn.click()
 
-    # Click Download Transactions button
+    # Navigate to download transactions page
     expand_account_services_btn = driver.find_element(By.ID, "moreAccountServicesLink")
     expand_account_services_btn.click()
-
-    # Set File Type to CSV and Time Period for a one-month period
     download_transactions_link = driver.find_element(
         By.XPATH,
         '//*[@id="c1-ease-dialog-0"]/div/c1-ease-card-more-account-services/c1-ease-dialog/div[2]/c1-ease-dialog-content/div/div[2]/div[4]/ul/li[4]',
     )
     download_transactions_link.click()
+    
+    # Set File Type to CSV and Time Period for a one-month period
+    # then download transaction data
     file_type_dropdown = driver.find_element(By.NAME, "file-type-selection")
     file_type_dropdown.click()
     csv_option = driver.find_element(By.ID, "c1-ease-option-0")
@@ -63,8 +66,6 @@ try:
     end_date_field.send_keys("10/31/2023")
     submit_btn = driver.find_element(By.XPATH, '//*[@type="submit"]')
     submit_btn.click()
-
-    time.sleep(5)  # Pause after script execution to allow page to load
 
 except Exception as e:
     print(f"An error occurred: {e}")
