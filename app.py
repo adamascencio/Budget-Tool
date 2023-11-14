@@ -18,12 +18,18 @@ csv_files.sort(key=os.path.getmtime, reverse=True)
 newest_csv = csv_files[0] if csv_files else None
 
 if newest_csv:
-  print(f"Found the most recent CSV file: {newest_csv}")
-else: 
+    print(f"Found the most recent CSV file: {newest_csv}")
+else:
     print("No CSV files found in the Downloads folder")
-    exit() 
+    exit()
 
 # Convert csv file to xlsx file
 wb = Workbook()
 ws = wb.active
 
+with open(newest_csv, "r") as f:
+    reader = csv.reader(f, delimiter=",")
+    for row in reader:
+        ws.append(row)
+
+wb.save(capital_one_dir / "transactions.xlsx")
