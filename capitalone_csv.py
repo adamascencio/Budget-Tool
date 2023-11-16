@@ -41,6 +41,7 @@ for cell in ws["C"]:
     if not cell.value:
         if ws[f"B{cell.row}"].value == "Payment/Credit":
             rows_to_delete.append(cell.row)
+        # If row has a credit set it to a negative debit in col C
         else:
             cell.value = str(float(ws[f"D{cell.row}"].value) * -1)
 
