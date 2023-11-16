@@ -32,4 +32,22 @@ with open(newest_csv, "r") as f:
     for row in reader:
         ws.append(row)
 
-wb.save(capital_one_dir / "transactions.xlsx")
+ws.delete_cols(2, 3)  # Delete Posted Date and Card Number columns
+
+rows_to_delete = []
+
+# First pass: determine which rows to delete
+for cell in ws["C"]:
+    if not cell.value:
+        if ws[f"B{cell.row}"].value == "Payment/Credit":
+            rows_to_delete.append(cell.row)
+        else:
+            cell.value = str(float(ws[f"D{cell.row}"].value) * -1)
+
+# Second pass: delete rows from the bottom up
+for row in sorted(rows_to_delete, reverse=True):
+    ws.delete_rows(row, 1)
+
+ws.delete_cols(4, 1)  # Delete Credit column
+
+wb.save(capital_one_dir / "transactions.xlsx")  # Save wb to the Capital One folder
