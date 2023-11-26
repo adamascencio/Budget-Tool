@@ -1,7 +1,7 @@
 import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from utils import login_url
+from utils import cap_one_login_url
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -14,7 +14,7 @@ USER_PASSWORD = os.getenv("PASSWORD")
 # Initialize the WebDriver
 driver = webdriver.Chrome()
 driver.implicitly_wait(10)  # Wait up to 10 seconds for elements to become available
-driver.get(login_url)
+driver.get(cap_one_login_url)
 
 # Download transaction data from Capital One in CSV format
 try:
