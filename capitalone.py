@@ -39,7 +39,7 @@ last_day_of_month = first_day_of_next_month - datetime.timedelta(days=1)
 # Format dates in "MM/DD/YYYY" format
 formatted_first_day = first_day_of_month.strftime("%m/%d/%Y")
 formatted_last_day = last_day_of_month.strftime("%m/%d/%Y")
-
+time.sleep(5) # Wait for page to load
 # Download transaction data from Capital One in CSV format
 try:
     # Input Email & Password
