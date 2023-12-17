@@ -1,7 +1,7 @@
 #! Python3
 # - Download transaction data from capitalone.com and save to a CSV file
 
-import os, csv
+import os, csv, datetime
 from glob import glob
 from pathlib import Path
 from openpyxl import Workbook
@@ -51,4 +51,6 @@ for row in sorted(rows_to_delete, reverse=True):
 
 ws.delete_cols(4, 1)  # Delete Credit column
 
-wb.save(capital_one_dir / "transactions.xlsx")  # Save wb to the Capital One folder
+# create string of today's date in format MM-DD-YYYY
+today = datetime.datetime.today().strftime("%m-%d-%Y")
+wb.save(capital_one_dir / f"{today}-transactions.xlsx")  # Save wb to the Capital One folder
